@@ -31,4 +31,13 @@
     line-height: 1em;
     left: 30%;
     top:35%;
+    float: left;
+}
+
+#weatherType{
+    color: dodgerblue;
+    text-align: center;
+    font-size: 35px;
+    line-height: 1em;
+    margin-left: 2%;
 }

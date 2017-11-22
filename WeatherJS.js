@@ -3,54 +3,56 @@ if(navigator.geolocation){
 }
 
 function success(position){
-     var city;
-     var temperature = 0;
-     var longitude =  position.coords.longitude;
-     var latitude = position.coords.latitude;
-     var url = "https://fcc-weather-api.glitch.me/api/current?lat=" + latitude + "&lon=" + longitude;
-     $.getJSON(url, function(result) {
-         temperature = result.main.temp;
-         city = result.name;
-         $('#city').html(city);
-         $('#convertTemperature').html(temperature + "C");
-         getIcon(result);
-         checkTemperatureType(temperature);
-     })
+    $(document).ready(function () {
+        var city;
+        var temperature = 0;
+        var longitude =  position.coords.longitude;
+        var latitude = position.coords.latitude;
+
+        var url = "https://fcc-weather-api.glitch.me/api/current?lat=" + latitude + "&lon=" + longitude;
+        $.getJSON(url, function(result) {
+            temperature = result.main.temp.toFixed(1);
+            city = result.name;
+            $('#city').html(city);
+            $('#convertTemperature').html(temperature);
+            $('#weatherType').html("C");
+            getIcon(result);
+        });
+        $('#weatherType').click(function () {
+            checkTemperatureType(temperature);
+        });
+    })
 }
+
+
+
 
 function fail(msg) {
     console.log("Fail");
 }
 
 function checkTemperatureType(temp){
-    $(document).ready(function () {
-        if(temp.indexOf('C') > -1){
+        var check = $('#weatherType').text();
+
+        if(check === "C"){
             convertCelciusToFahrenheit(temp);
+
+            $('#weatherType').html("F");
         }
         else{
             fahrenheitToCelcius(temp);
+            $('#weatherType').html("C");
         }
-    })
-
 }
 
 function convertCelciusToFahrenheit(temp){
-    $(document).ready(function () {
-        $('#convertTemperature').click(function () {
             var fahrenheit = (9 / 5) * temp + 32;
-            $('#convertTemperature').html(fahrenheit + "F")
-
-        });
-    })
+            $('#convertTemperature').html(fahrenheit.toFixed(1))
 }
 
 function fahrenheitToCelcius(temp){
-    $(document).ready(function () {
-        $('#convertTemperature').click(function () {
-            var fahrenheit = (temp - 32) * (9/5);
-            $('#convertTemperature').html(fahrenheit + "F")
-        });
-    })
+            var fahrenheit = (temp - 32) * (5/9);
+            $('#convertTemperature').html(fahrenheit.toFixed(1))
 }
 
 function getIcon(result){
