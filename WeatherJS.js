@@ -1,29 +1,34 @@
-if(navigator.geolocation){
-    navigator.geolocation.getCurrentPosition(success, fail);
-}
+$(document).ready(function () {
+    if(navigator.geolocation){
+        navigator.geolocation.getCurrentPosition(success, fail);
+    }
 
-function success(position){
-    $(document).ready(function () {
-        var city;
-        var temperature = 0;
-        var longitude =  position.coords.longitude;
-        var latitude = position.coords.latitude;
+    function success(position){
+            //this gets the longitude and latitude
+            var longitude =  position.coords.longitude;
+            var latitude = position.coords.latitude;
+            //uses latitude and longtitude and combine them with the url to get user's location
+            var url = "https://fcc-weather-api.glitch.me/api/current?lat=" + latitude + "&lon=" + longitude;
+            //enter the url in the method which will give us user's weather details
+            getWeather(url);
 
-        var url = "https://fcc-weather-api.glitch.me/api/current?lat=" + latitude + "&lon=" + longitude;
-        $.getJSON(url, function(result) {
-            temperature = result.main.temp.toFixed(1);
-            city = result.name;
-            $('#city').html(city);
-            $('#convertTemperature').html(temperature);
-            $('#weatherType').html("C");
-            getIcon(result);
-        });
-        $('#weatherType').click(function () {
-            checkTemperatureType(temperature);
-        });
-    })
-}
-
+                //when user clicks weather unit
+                $('#weatherType').click(function () {
+                    //checks if current weather unit is default type(celsius)
+                    var check = $(this).text();
+                    if(check === "C"){
+                        //if so, we convert into fahrenheit and change unit (F)
+                        $(this).html("F");
+                        $('#convertTemperature').html(fahrenheit);
+                    }
+                    else{
+                        //otherwise, it means current unit type is fahrenheit and we will convert to celsius
+                        $(this).html("C");
+                        $('#convertTemperature').html(celsius);
+                    }
+                });
+            }
+});
 
 
 
@@ -31,32 +36,29 @@ function fail(msg) {
     console.log("Fail");
 }
 
-function checkTemperatureType(temp){
-        var check = $('#weatherType').text();
-
-        if(check === "C"){
-            convertCelciusToFahrenheit(temp);
-
-            $('#weatherType').html("F");
-        }
-        else{
-            fahrenheitToCelcius(temp);
-            $('#weatherType').html("C");
-        }
-}
-
-function convertCelciusToFahrenheit(temp){
-            var fahrenheit = (9 / 5) * temp + 32;
-            $('#convertTemperature').html(fahrenheit.toFixed(1))
-}
-
-function fahrenheitToCelcius(temp){
-            var fahrenheit = (temp - 32) * (5/9);
-            $('#convertTemperature').html(fahrenheit.toFixed(1))
-}
 
 function getIcon(result){
+    //gets icon from json and prepends it onto the html
     var link = result.weather[0].icon;
     $('#icon').prepend('<img src=' +link + '>');
 }
 
+function getWeather(url){
+    //converts json from url and we grab the city, temperature and icon
+    $.getJSON(url, function(result) {
+        var city;
+        //temperature rounded to one degree
+        var temperature = result.main.temp.toFixed(1);
+        //default temperature is in celsius
+        celsius = temperature;
+        //converts from celsius to fahrenheit
+        fahrenheit = (1.9 * temperature) + 32;
+        //grabs city name from json
+        city = result.name;
+        // here we add all of our data to our html according to id
+        $('#city').html(city);
+        $('#convertTemperature').html(temperature);
+        $('#weatherType').html("C");
+        getIcon(result);
+    });
+}
