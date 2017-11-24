@@ -1,7 +1,6 @@
 #title{
     font-size: 50px;
     color: silver;
-    left: 35%;
     font-family: Courier, Monaco, monospace;
 }
 
@@ -13,8 +12,7 @@
     color: silver;
     font-size: 35px;
     text-align: center;
-    line-height: 4em;
-    left: 30%;
+    line-height: 2em;
 }
 
 #convertTemperature{
@@ -22,16 +20,13 @@
     text-align: center;
     font-size: 35px;
     line-height: 1em;
-    left: 30%;
 }
 
 #icon{
-    text-align: center;
+
     font-size: 35px;
     line-height: 1em;
-    left: 30%;
-    top:35%;
-    float: left;
+
 }
 
 #weatherType{
@@ -39,5 +34,16 @@
     text-align: center;
     font-size: 35px;
     line-height: 1em;
-    margin-left: 2%;
+
+}
+
+#background2 {
+    background: black;
+}
+
+#description {
+    color: silver;
+    text-align: center;
+    font-size: 35px;
+    line-height: 2em;
 }

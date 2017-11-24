@@ -16,14 +16,14 @@ $(document).ready(function () {
                 $('#weatherType').click(function () {
                     //checks if current weather unit is default type(celsius)
                     var check = $(this).text();
-                    if(check === "C"){
+                    if (check === "Cº") {
                         //if so, we convert into fahrenheit and change unit (F)
-                        $(this).html("F");
+                        $(this).html("Fº");
                         $('#convertTemperature').html(fahrenheit);
                     }
                     else{
                         //otherwise, it means current unit type is fahrenheit and we will convert to celsius
-                        $(this).html("C");
+                        $(this).html("Cº");
                         $('#convertTemperature').html(celsius);
                     }
                 });
@@ -47,6 +47,8 @@ function getWeather(url){
     //converts json from url and we grab the city, temperature and icon
     $.getJSON(url, function(result) {
         var city;
+        //gets description
+        var description = result.weather[0].description;
         //temperature rounded to one degree
         var temperature = result.main.temp.toFixed(1);
         //default temperature is in celsius
@@ -57,8 +59,9 @@ function getWeather(url){
         city = result.name;
         // here we add all of our data to our html according to id
         $('#city').html(city);
+        $('#description').html(description);
         $('#convertTemperature').html(temperature);
-        $('#weatherType').html("C");
+        $('#weatherType').html("Cº");
         getIcon(result);
     });
 }
